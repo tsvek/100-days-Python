@@ -58,11 +58,12 @@ def make_report(available_resources):
 
 def check_resources(drink_ingredients):
     """Returns True if resources is enought for drink making."""
+    enought = True
     for resource, amount in drink_ingredients.items():
         if resources[resource] < amount:
             print(f"Sorry, there is not enought {resource}.")
-            return False
-    return True
+            enought = False
+    return enought
 
 def process_coins():
     """Returns the sum of coins inserted."""
@@ -103,14 +104,11 @@ while work:
     elif choice == "report": # TODO 3. Print report
         report = make_report(resources)
         print(report)
-        continue
     elif choice in MENU.keys():        
         cost, ingredients = get_drink_info(choice)
         if check_resources(ingredients): # TODO 4. Check resource sufficient           
             total = process_coins() # TODO 5. Process coins
             if payment_check(total, cost): # TODO 6. Check transaction successful
                 make_drink(ingredients, choice) # TODO 7. Make coffee
-        else:
-            continue
     else:
         print("Please, enter valid word!")
