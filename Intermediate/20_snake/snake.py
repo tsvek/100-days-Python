@@ -23,6 +23,14 @@ class Snake(Turtle):
                 segment.forward(-20*id)
             self.body.append(segment)
 
+    def grow(self):
+        """Add segment after cath the food."""
+        segment = Turtle(shape="square")
+        segment.color("white")
+        segment.penup()
+        segment.goto(self.body[-1].xcor(), self.body[-1].ycor())
+        self.body.append(segment)
+
     def move(self):
         """Moving snake."""
         for seg_num in range(len(self.body) - 1, 0, -1):
@@ -33,16 +41,16 @@ class Snake(Turtle):
 
     def up(self):
         if self.head.heading() != DOWN:
-            self.head.setheading(90)
+            self.head.setheading(UP)
     
     def down(self):
         if self.head.heading() != UP:
-            self.head.setheading(270)
+            self.head.setheading(DOWN)
     
     def left(self):
         if self.head.heading() != RIGHT:
-            self.head.setheading(180)
+            self.head.setheading(LEFT)
     
     def right(self):
         if self.head.heading() != LEFT:
-            self.head.setheading(0)
+            self.head.setheading(RIGHT)
