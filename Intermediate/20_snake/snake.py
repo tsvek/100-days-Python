@@ -16,19 +16,18 @@ class Snake(Turtle):
     def create_body(self):
         """Create starting snake body."""
         for id in range(3):
-            segment = Turtle(shape="square")
-            segment.color("white")
-            segment.penup()
-            if id != 0:
-                segment.forward(-20*id)
-            self.body.append(segment)
+            self.grow()
+
 
     def grow(self):
         """Add segment after cath the food."""
         segment = Turtle(shape="square")
         segment.color("white")
         segment.penup()
-        segment.goto(self.body[-1].xcor(), self.body[-1].ycor())
+        if len(self.body) == 0:
+            segment.goto(0, 0)
+        else:
+            segment.goto(self.body[-1].xcor(), self.body[-1].ycor())
         self.body.append(segment)
 
     def move(self):
@@ -38,6 +37,13 @@ class Snake(Turtle):
             new_y = self.body[seg_num - 1].ycor()
             self.body[seg_num].goto(new_x, new_y)
         self.head.forward(MOVE_DISTANCE)
+
+    def tail_collision(self):
+        for segment in self.body[1:]:
+            if self.head.distance(segment) < 10:
+                return True
+
+
 
     def up(self):
         if self.head.heading() != DOWN:
