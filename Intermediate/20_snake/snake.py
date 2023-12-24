@@ -43,8 +43,6 @@ class Snake(Turtle):
             if self.head.distance(segment) < 10:
                 return True
 
-
-
     def up(self):
         if self.head.heading() != DOWN:
             self.head.setheading(UP)
