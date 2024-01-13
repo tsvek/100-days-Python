@@ -24,19 +24,14 @@ screen.onkey(user.down, "Down")
 game_on = True
 while game_on:
     screen.update()
-    time.sleep(0.05)
+    time.sleep(0.1)
     
     field
     bot.move()
     ball.move()
 
-    #if bot.distance(ball) < 15:
-    #    ball.setheading(ball.heading()-180)
-    #if user.distance(ball) < 15:
-    #    ball.setheading(ball.heading()+180)
-    #wall_collision = ball.ycor() >= 260
-    #if wall_collision:
-    #    ball.wall_bounce()
+    if (bot.distance(ball) < 50 and ball.xcor() > 330) or (user.distance(ball) < 50 and ball.xcor() < -335):
+        ball.reflect_from_paddle()
 
 
 screen.exitonclick()

@@ -25,15 +25,16 @@ class Ball(Turtle):
         self.check_out_of_bounds()
     
     def reflect_from_wall(self):
-        """Detect collision with the up and down walls."""    
+        """Detect collision and reflect with walls."""    
         if self.ycor() >= 245 or self.ycor() <=-270:
             self.setheading(-self.heading())
+    
+    def reflect_from_paddle(self):
+        """Reflect from paddles."""
+        self.setheading(180-self.heading())
         
     def check_out_of_bounds(self):    
         """Detect out of bounds."""
         if self.xcor() > 400 or self.xcor() < -415:
             self.goto(0, 0)
             self.set_random_head()
-
-
-
