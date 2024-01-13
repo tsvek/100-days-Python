@@ -1,4 +1,5 @@
 import random
+
 from turtle import Turtle
 
 class Ball(Turtle):
@@ -22,7 +23,6 @@ class Ball(Turtle):
         """Move the ball."""
         self.forward(20)
         self.reflect_from_wall()
-        self.check_out_of_bounds()
     
     def reflect_from_wall(self):
         """Detect collision and reflect with walls."""    
@@ -33,8 +33,7 @@ class Ball(Turtle):
         """Reflect from paddles."""
         self.setheading(180-self.heading())
         
-    def check_out_of_bounds(self):    
-        """Detect out of bounds."""
-        if self.xcor() > 400 or self.xcor() < -415:
-            self.goto(0, 0)
-            self.set_random_head()
+    def out_of_bounds(self):    
+        """Action when out of bounds."""
+        self.goto(0, 0)
+        self.set_random_head()
