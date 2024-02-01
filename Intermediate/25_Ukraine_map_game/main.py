@@ -34,8 +34,9 @@ with open("ua_cities.csv", mode='r', encoding='utf-8') as file:
     cities_data = {row[0]:row[1:] for row in reader}
 
 count = 0
-while count != 2:
-    answer_city = screen.textinput(title=f"{count}/25 Guess the City", prompt="What's the city name?").lower().title()
+while count != 25:
+    answer_city = screen.textinput(title=f"{count}/25 Guess the City", 
+                                   prompt="What's the city name? 'Exit' for exit=)").title()
     if answer_city == "Exit":
         break
     if answer_city in cities_data.keys():
