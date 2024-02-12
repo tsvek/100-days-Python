@@ -5,20 +5,20 @@ RED = '#e7005b'
 GREEN = '#9bdeac'
 YELLOW = '#f7f5dd'
 FONT_NAME = 'Courier'
-WORK_MIN = 1
-SHORT_BREAK_MIN = 1
-LONG_BREAK_MIN = 1
+WORK_MIN = 25
+SHORT_BREAK_MIN = 5
+LONG_BREAK_MIN = 20
 reps = 0
 timer = None
 
-# TODO: Timer reset
+# Timer reset
 def reset_timer():
     window.after_cancel(timer)
     status.config(text='Timer', fg=GREEN)
     check_marks.config(text='')
     canvas.itemconfig(timer_text, text="00:00")
 
-# TODO: Timer mechanism
+# Timer mechanism
 def start_timer():
     global reps
     work_sec = WORK_MIN * 60
@@ -39,7 +39,7 @@ def start_timer():
     count_down(seconds)
     reps += 1
 
-# TODO: Countdown mechanism
+# Countdown mechanism
 def count_down(count):
     minute = count // 60
     second = count % 60
