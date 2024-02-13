@@ -1,8 +1,10 @@
+import csv
+import os
 import tkinter
 
 from random import choice
 
-# TODO: Password generator
+# Password generator
 def pass_gen():
     password_entry.delete(0, 'end')
     all_in_one = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
@@ -13,16 +15,30 @@ def pass_gen():
     password = ''.join([choice(all_in_one) for _ in range(20)])
     password_entry.insert(0, string=password)
 
-# TODO: Save password
+# Save password
 def pass_save():
-    pass
+    for_save = {
+        'website': website_entry.get(),
+        'login': login_entry.get(), 
+        'password': password_entry.get()
+    }
+    mode = 'a+' if os.path.isfile('pass_manager.csv') else 'w'
+    with open('pass_manager.csv', mode=mode, encoding="utf-8", newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=for_save.keys(), delimiter=';')
+        if mode == 'w':
+            writer.writeheader()
+        writer.writerow(for_save)
+    website_entry.delete(0, 'end')
+    login_entry.delete(0, 'end')
+    password_entry.delete(0, 'end')
+
 # TODO: UI setup
 window = tkinter.Tk()
 window.title("Password Manager")
 window.config(padx=20, pady=20)
 
 canvas = tkinter.Canvas(width=200, height=200)
-image = tkinter.PhotoImage(file=r'Intermediate\29_password_manager\logo.png')
+image = tkinter.PhotoImage(file='logo.png')
 canvas.create_image(100, 100, image=image)
 canvas.grid(column=1, row=0)
 
