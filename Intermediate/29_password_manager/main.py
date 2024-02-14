@@ -3,6 +3,7 @@ import os
 import tkinter
 
 from random import choice
+from tkinter import messagebox
 
 # Password generator
 def pass_gen():
@@ -18,21 +19,30 @@ def pass_gen():
 # Save password
 def pass_save():
     for_save = {
-        'website': website_entry.get(),
-        'login': login_entry.get(), 
-        'password': password_entry.get()
+        'Website': website_entry.get(),
+        'Login': login_entry.get(), 
+        'Password': password_entry.get()
     }
-    mode = 'a+' if os.path.isfile('pass_manager.csv') else 'w'
-    with open('pass_manager.csv', mode=mode, encoding="utf-8", newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=for_save.keys(), delimiter=';')
-        if mode == 'w':
-            writer.writeheader()
-        writer.writerow(for_save)
+    
+    if '' not in for_save.values():
+        message = '\n'.join([f'{key}:{value}' for key, value in for_save.items()])
+        checking = messagebox.askyesno(title='Is everything correct?', message=message)
+        
+        if checking:
+            mode = 'a+' if os.path.isfile('pass_manager.csv') else 'w'
+            with open('pass_manager.csv', mode=mode, encoding="utf-8", newline='') as file:
+                writer = csv.DictWriter(file, fieldnames=for_save.keys(), delimiter=';')
+                if mode == 'w':
+                    writer.writeheader()
+                writer.writerow(for_save)
+            messagebox.showinfo(title="Success!", message="Your password has been saved.")
+    else:
+        messagebox.showinfo(title="Opps", message='Please fill in all fields!')
     website_entry.delete(0, 'end')
     login_entry.delete(0, 'end')
     password_entry.delete(0, 'end')
 
-# TODO: UI setup
+# UI setup
 window = tkinter.Tk()
 window.title("Password Manager")
 window.config(padx=20, pady=20)
