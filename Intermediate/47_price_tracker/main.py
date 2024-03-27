@@ -5,8 +5,11 @@ import smtplib
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
-load_dotenv()
+print("Start cat food script.")
+# TODO: error handling
+# TODO: logging
 
+load_dotenv()
 urls = [
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/sheba-selection-in-sauce-s-lososem-v-souse-85-g-3065890096820/",
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/sheba-selection-in-sauce-s-kuricej-v-souse-85-g-3065890096806/",
@@ -19,11 +22,9 @@ urls = [
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/friskies-kusochki-v-souse-s-kuricej-85-g-7613036965262/",
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/friskies-s-lososem-v-podlive-100-gr/",
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/friskies-kusochki-v-podlivke-s-tuncom-85-g-7613036962315/",
-    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-ndichkoyu-v-sous-85-g-5900951302077/?tab=about&chart=true",
+    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-ndichkoyu-v-sous-85-g-5900951302077/",
     "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-kurkoyu-v-zhele-85-g-5900951302138/",
-    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-lososem-v-sous-85-g-5900951302053/",
-    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-yalovichinoyu-v-sous-85-g-5900951301940/",
-    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-z-tuncem-v-zhele-85-g-5900951302381/",
+    "https://hotline.ua/ua/zootovary-korm-dlya-koshek/whiskas-tasty-mix-z-yagnyatkom-kurkoyu-ta-morkvoyu-v-sous-85-g-4770608262433/",
 ]
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0',
@@ -33,6 +34,7 @@ headers = {
 
 results = dict()
 
+print("Loop through the products.")
 for url in urls:
     response = requests.get(url=url, headers=headers)
 
@@ -40,7 +42,6 @@ for url in urls:
     # Get product name and list with offers
     title = soup.select_one("h1.title__main").getText().strip()
     list_1 = soup.select("div.price div.content div.list div.list__item")
-
     low_3 = list()
     # Go through the list and add tuple(shop name, price) to new list
     for item in list_1:
@@ -54,7 +55,9 @@ for url in urls:
     condition = ("Sheba" in title and low_3[0][1] < 15) or ("Friskies" in title and low_3[0][1] < 14) or ("Whiskas" in title and low_3[0][1] < 14)
     if condition:
         results[title] = low_3
+        print(f"Get some for {title}")
 # Create html for email
+print("Start format email.")
 email_body = """
 <html>
   <head></head>
@@ -87,5 +90,5 @@ message = f"Content-Type: text/html\nSubject:Може варто прикупи�
 with smtplib.SMTP('smtp.gmail.com') as connection:
     connection.starttls()
     connection.login(user=os.getenv('login'), password=os.getenv('password'))
-    connection.sendmail(from_addr=os.getenv('login'), to_addrs='feichka_new@ukr.net', msg=message.encode('utf-8'))
-
+    connection.sendmail(from_addr=os.getenv('login'), to_addrs=os.getenv('to'), msg=message.encode('utf-8'))
+    print("Email sent.")
